@@ -1,0 +1,13 @@
+#config_version=5
+
+# SET IN config.yaml
+#hardware:
+#  platform:     opp
+#  driverboards: gen3
+
+opp:
+  ports:
+    - /dev/ttyACM0
+  poll_hz: 100
+  debug:   true
+

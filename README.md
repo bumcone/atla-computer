@@ -9,9 +9,14 @@
 
 #### Avatar - The Last Airbender (ATLA), the pinball machine!
 
-This repository tracks the computer system running the pinball machine,
-specifically the software -
-[Mission Pinball Framework (MPF)](https://missionpinball.org).
+This repository contains the computer system running the pinball machine,
+specifically the software.
+
+-----
+## Mission Pinball Framework (MPF)
+
+[ATLA](https://www.github.com/bumcone/avatar-pinball) is driven by a computer
+system running [MPF](https://missionpinball.org) on Linux.
 
 -----
 [//]: # ( vim: set ts=4 sw=4 et cindent tw=80 ai si syn=markdown ft=markdown: )

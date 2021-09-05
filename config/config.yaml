@@ -1,0 +1,179 @@
+#config_version=5
+
+hardware:
+  platform:     opp
+  driverboards: gen3
+
+config:
+  - opp.yaml
+
+modes:
+  - service
+  - base
+
+
+
+# For logging, see ../../../pinball.mpf.git/mpf/mpfconfig.yaml
+#mpf:
+#  logging:
+
+
+
+# OPP switches are numbered sequentially depending on which wing board is the
+# switch input. Wing position 0 contains switch numbers 0 to 7. Wing position 1
+# contains switch numbers 8 to 15. Wing position 2 contains switch numbers 16 to
+# 23. Wing position 3 contains switch numbers 24 to 31. The switch is numbered
+# using the position of the OPP card (starting at 0), then a '-', and finally
+# the switch number on the card. 
+# 
+# Switch inputs for solenoids follow the same number convention. Since only four
+# inputs are available for each wing card, it uses the first four switch
+# numbers. Solenoid wing 0 uses switch numbers 0 to 3. Solenoid wing 1 uses
+# switch numbers 8 to 11. Solenoid wing 2 uses switch numbers 16 to 19.
+# Solenoid wing 3 uses switch numbers 24 to 27.
+# 
+# Switch inputs for a switch matrix are number slightly differently. To
+# configure an 8x8 switch matrix wing 2 is configured as the matrix input and
+# wing 3 is configured as a matrix output. The OPP hardware strobes the eight
+# outputs while reading from the eight inputs. This allows 64 inputs to be read
+# using only 16 wires. The matrix switch inputs are numbered from 32 to 95.
+# Switches 32 - 39 are column 0, switches 40 - 47 are column 1, switch 48 - 55
+# are column 2, switches 56 - 63 are column 3, switches 64 - 71 are column 4,
+# switches 72 to 79 are column 5, switches 80 to 87 are column 6, and switches
+# 88 to 95 are column 7.
+#
+switches:
+  s_left_flipper:
+    number: 0-0-0
+    tags: left_flipper
+
+
+
+keyboard:
+  ';':
+    switch: s_left_flipper
+
+
+
+# OPP coils are numbered sequentially depending on which wing board is the coil
+# output. Wing position 0 contains coil numbers 0 to 3. Wing position 1 contains
+# coil numbers 4 to 7. Wing position 2 contains coil numbers 8 to 11. Wing
+# position 3 contains coil numbers 12 to 15. The coil is numbered using the
+# position of the OPP card (starting at 0), then a ‘-‘, and finally the coil
+# number on the card.
+# 
+# The OPP hardware also has the ability to specify the "pulse time". Pulse time
+# is the coil's initial kick time ( `default_pulse_ms` ).
+# 
+# If you want to hold a driver on at less than full power, MPF does this by
+# using default_hold_power parameter which works for all platforms. It can range
+# from 0.0 to 1.0 and defines the time share the coil is on (0%-100%).
+# 
+# The period is fixed at 16ms for OPP. To set the hold power to 25%, set
+# default_hold_power to .25 and OPP will use 4ms/16ms = 25%.
+# 
+# OPP allows you to fine tune the recycle time of your coils. If you add
+# `recycle: True` to your coil you can set `recycle_factor` in the
+# `platform_settings` secton of your coil to set the recycle time. The time will
+# be `default_pulse_ms * recycle_factor`. For instance, if you set a pulse time
+# of 10ms and a recycle_factor of two the coil will cool down for at least 20ms.
+#
+coils:
+
+  c_flipper_left_main:
+    number: 0-0-0
+    default_pulse_ms: 20
+  c_flipper_left_hold:
+    number: 0-0-1
+    default_hold_power: 1.0
+    # Allow the coil to be left on
+    allow_enable: true
+
+
+
+flippers:
+  left_flipper:
+    main_coil:         c_flipper_left_main
+    hold_coil:         c_flipper_left_hold
+    activation_switch: s_left_flipper
+    # Enable the flipper even when a game is not in progress
+    #enable_events:     machine_reset_phase_3
+
+
+
+#ball_devices:
+
+#lights:
+
+playfields:
+  playfield:
+    tags: default
+
+displays:
+  window:
+    width:   864
+    height:  864
+
+# Actual X11 Window
+window:
+  width:          864
+  height:         864
+  #title:          MPFWindow
+  resizable:      true
+  borderless:     true
+  fullscreen:     false
+  exit_on_escape: true
+  source_display: window
+
+
+
+#slides:
+
+
+
+#slide_player:
+
+
+
+player_vars:
+  score:
+    initial_value: 0
+
+#variable_player:
+
+
+
+# You need to define a "sfx" sound track because the service mode brings some
+# sounds (see the sound documentation for details)
+sound_system:
+  master_volume: 0.75
+  tracks:
+    music:
+      type: standard
+      simultaneous_sounds: 1
+      volume: 0.5
+    voice:
+      type: standard
+      simultaneous_sounds: 1
+      volume: 0.7
+    sfx:
+      type: standard
+      simultaneous_sounds: 8
+      volume: 0.4
+
+
+
+# additionally you need to define some slide styles which are used in the mode
+widget_styles:
+  medium:
+    font_name: pixelmix
+    font_size: 8           # for LCDs you need to increase this to 30-40. also change the font above
+    adjust_top: 1
+    adjust_bottom: 1
+  small:
+    font_name: smallest_pixel-7
+    font_size: 9           # for LCDs you need to increase this to 30-40. also change the font above
+    adjust_top: 2
+    adjust_bottom: 3
+
+# vim: set ts=2 sw=2 et tw=80 ai si syn=yaml ft=yaml:
