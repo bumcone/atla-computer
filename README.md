@@ -2,7 +2,10 @@
 
 ## Computer
 
+*This is part of the [Avatar - The Last Airbender](https://github.com/bumcone/avatar-pinball) pinball project.*
+
 ![banner](banner.png "Avatar - The Last Airbender (pinball)")
+
 
 -----
 ## Introduction
